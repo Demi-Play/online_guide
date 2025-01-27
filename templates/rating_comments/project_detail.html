@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ project.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ project.title }}</h1>
+<p>{{ project.description }}</p>
+
+<h2>Rate this Project</h2>
+<form method="post">
+    {{ rating_form.hidden_tag() }}
+    {{ rating_form.score.label }}: {{ rating_form.score }}
+    {% for error in rating_form.score.errors %}
+        <div>{{ error }}</div>
+    {% endfor %}
+    <button type="submit">Submit Rating</button>
+</form>
+
+<h2>Leave a Comment</h2>
+<form method="post">
+    {{ comment_form.hidden_tag() }}
+    {{ comment_form.text.label }}: {{ comment_form.text }}
+    {% for error in comment_form.text.errors %}
+        <div>{{ error }}</div>
+    {% endfor %}
+    <button type="submit">Post Comment</button>
+</form>
+
+<h3>Comments</h3>
+<ul>
+    {% for comment in comments %}
+        <li><strong>{{ comment.user.username }}</strong> ({{ comment.created_at }}): {{ comment.text }}</li>
+    {% endfor %}
+</ul>
+
+<h3>Ratings</h3>
+<ul>
+    {% for rating in ratings %}
+        <li>{{ rating.user.username }}: {{ rating.score }}</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
