@@ -1,17 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-</head>
-<body>
-    <h1>Login</h1>
-    <form method="POST">
-        {{ form.hidden_tag() }}
-        <p>{{ form.email.label }} {{ form.email(size=20) }}</p>
-        <p>{{ form.password.label }} {{ form.password(size=20) }}</p>
-        <p>{{ form.submit() }}</p>
-    </form>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+<h2 class="mui--text-headline">Вход в систему</h2>
+<form method="POST" class="mui-form">
+    {{ form.hidden_tag() }}
+    <div class="mui-textfield">
+        {{ form.email.label }} 
+        {{ form.email(size=20) }}
+    </div>
+    <div class="mui-textfield">
+        {{ form.password.label }}
+        {{ form.password(size=20) }}
+    </div>
+    <button type="submit" class="mui-btn mui-btn--raised mui-btn--primary">{{ form.submit.label }}
+</form>
+{% endblock %}

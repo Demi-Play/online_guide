@@ -3,26 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Online Guide{% endblock %}</title>
+    <title>{% block title %}Онлайн гид{% endblock %}</title>
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <!-- MUI CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/muicss@0.10.3/dist/css/mui.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
 </head>
 <body>
     <header>
         <nav>
-            <a href="/">Home</a>
-            {% if current_user.is_authenticated %}
-                <a href="{{ url_for('profile.view_profile') }}">Profile</a>
-                <a href="{{ url_for('auth.logout') }}">Logout</a>
-            {% else %}
-                <a href="{{ url_for('auth.login') }}">Login</a>
-                <a href="{{ url_for('auth.register') }}">Register</a>
-            {% endif %}
+            <div class="mui-appbar mui--z-depth-4">
+                <div class="mui-container">
+                    <a href="/" class="mui-btn mui-btn--flat">Главная</a>
+                    {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('auth.logout') }}" class="mui-btn mui-btn--flat">Выйти</a>
+                        <a href="{{ url_for('profile.view_profile') }}" class="mui-btn mui-btn--flat">Профиль</a>
+                    {% else %}
+                        <a href="{{ url_for('auth.login') }}" class="mui-btn mui-btn--flat">Войти</a>
+                        <a href="{{ url_for('auth.register') }}" class="mui-btn mui-btn--flat">Регистрация</a>
+                    {% endif %}
+                </div>
+            </div>
         </nav>
     </header>
-    <main>
-        {% block content %}{% endblock %}
+
+    <main class="mui-container">
+        {% block content %}
+        {% endblock %}
     </main>
-    <footer>
-        <p>&copy; 2025 Online Apartment Guide</p>
+
+    <footer class="mui-container mui--text-center">
+        <p>&copy; {{ year }} Онлайн гид по ремонту</p>
     </footer>
+
+    <!-- MUI JS -->
+    <script src="https://cdn.jsdelivr.net/npm/muicss@0.10.3/dist/js/mui.min.js"></script>
 </body>
 </html>

@@ -5,9 +5,10 @@ from views.auth import auth_bp
 from views.profile import profile_bp
 from flask_login import LoginManager
 from views.projects import projects_bp
-from views.rating_comments import rating_comment_bp
+from views.planer import planer_bp
+from views.rating_comments import rating_comment_bp 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='./static')
 app.config.from_object(Config)
 
 # Инициализация расширений
@@ -27,6 +28,7 @@ app.register_blueprint(auth_bp, url_prefix='/auth')
 app.register_blueprint(profile_bp, url_prefix='/profile') 
 app.register_blueprint(projects_bp, url_prefix='/projects')
 app.register_blueprint(rating_comment_bp, url_prefix='/project')
+app.register_blueprint(planer_bp, url_prefix='/planer')
 
 
 @app.route('/')

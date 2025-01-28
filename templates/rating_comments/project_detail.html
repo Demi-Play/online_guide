@@ -3,41 +3,142 @@
 {% block title %}{{ project.title }}{% endblock %}
 
 {% block content %}
-<h1>{{ project.title }}</h1>
-<p>{{ project.description }}</p>
+<div class="mui-container">
+    <!-- Заголовок и описание проекта -->
+    <div class="mui-panel">
+        <h1 class="mui--text-title">{{ project.name }}</h1>
+        <p class="mui--text-body1">{{ project.description }}</p>
+        
+        <p class="mui--text-body1">Рейтинг проекта: {{ average_rating }}</p>
+    </div>
 
-<h2>Rate this Project</h2>
-<form method="post">
-    {{ rating_form.hidden_tag() }}
-    {{ rating_form.score.label }}: {{ rating_form.score }}
-    {% for error in rating_form.score.errors %}
-        <div>{{ error }}</div>
-    {% endfor %}
-    <button type="submit">Submit Rating</button>
-</form>
+    <!-- Рейтинг звёздочками -->
+    <div class="mui-panel">
+        <h2 class="mui--text-headline">Оцените этот проект</h2>
+        <form method="post" class="mui-form">
+            {{ rating_form.hidden_tag() }}
+            <div class="rating">
+                {% for i in range(5, 0, -1) %}
+            <input type="radio" id="star{{ i }}" name="score" value="{{ i }}"
+                   {% if rating_form.score.data == i %}checked{% endif %} />
+            <label for="star{{ i }}" title="{{ i }} звезда">&#9733;</label>
+            {% endfor %}
+        </div>
+        {% for error in rating_form.score.errors %}
+            <div class="mui--text-danger">{{ error }}</div>
+        {% endfor %}
+            <button type="submit" class="mui-btn mui-btn--raised mui-btn--primary">Оценить</button>
+        </form>
+    </div>
 
-<h2>Leave a Comment</h2>
-<form method="post">
-    {{ comment_form.hidden_tag() }}
-    {{ comment_form.text.label }}: {{ comment_form.text }}
-    {% for error in comment_form.text.errors %}
-        <div>{{ error }}</div>
-    {% endfor %}
-    <button type="submit">Post Comment</button>
-</form>
+    <!-- Секция для комментариев -->
+    <div class="mui-panel">
+        <h2 class="mui--text-headline">Оставьте комментарий</h2>
+        <form method="post" class="mui-form">
+            {{ comment_form.hidden_tag() }}
+            <div class="mui-textfield">
+                {{ comment_form.text.label }}
+                {{ comment_form.text }}
+            </div>
+            {% for error in comment_form.text.errors %}
+                <div class="mui--text-danger">{{ error }}</div>
+            {% endfor %}
+            <button type="submit" class="mui-btn mui-btn--raised mui-btn--primary">Опубликовать</button>
+        </form>
+    </div>
 
-<h3>Comments</h3>
-<ul>
-    {% for comment in comments %}
-        <li><strong>{{ comment.user.username }}</strong> ({{ comment.created_at }}): {{ comment.text }}</li>
-    {% endfor %}
-</ul>
+    <!-- Слайдер для комментариев -->
+    <div class="mui-panel">
+        <h3 class="mui--text-subhead">Комментарии</h3>
+        <div class="comment-slider">
+            <button class="mui-btn mui-btn--fab prev-btn">‹</button>
+            <div class="comments">
+                {% for comment in comments %}
+                <div class="comment">
+                    <h3><strong>{{ comment.user.username }}</strong></h3>
+                    <span class="mui--text-caption">({{ comment.created_at.strftime('%d-%m-%Y %H:%M') }})</span>
+                <h3>{{ comment.text }}</h3>
+                </div>
+                {% endfor %}
+            </div>
+            <button class="mui-btn mui-btn--fab next-btn">›</button>
+        </div>
+    </div>
+</div>
 
-<h3>Ratings</h3>
-<ul>
-    {% for rating in ratings %}
-        <li>{{ rating.user.username }}: {{ rating.score }}</li>
-    {% endfor %}
-</ul>
+<!-- Подключение CSS для звёздочек и слайдера -->
+<style>
+    .rating {
+        direction: rtl;
+        display: inline-flex;
+    }
+    .rating input {
+        display: none;
+    }
+    .rating label {
+        font-size: 2rem;
+        color: #ccc;
+        cursor: pointer;
+    }
+    .rating input:checked ~ label,
+    .rating label:hover,
+    .rating label:hover ~ label {
+        color: #f5c518;
+    }
 
+    .comment-slider {
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        position: relative;
+    }
+    .comments {
+        display: flex;
+        overflow: hidden;
+        scroll-behavior: smooth;
+        width: 100%;
+    }
+    .comment {
+        flex: 0 0 100%;
+        text-align: center;
+        padding: 1rem;
+        box-sizing: border-box;
+    }
+    .prev-btn,
+    .next-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1;
+    }
+    .prev-btn {
+        left: 0;
+    }
+    .next-btn {
+        right: 0;
+    }
+</style>
+
+<!-- Слайдер логика -->
+<script>
+    const slider = document.querySelector('.comments');
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+
+    let scrollPosition = 0;
+
+    prevBtn.addEventListener('click', () => {
+        scrollPosition -= slider.clientWidth;
+        if (scrollPosition < 0) scrollPosition = 0;
+        slider.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+    });
+
+    nextBtn.addEventListener('click', () => {
+        scrollPosition += slider.clientWidth;
+        if (scrollPosition > slider.scrollWidth - slider.clientWidth) {
+            scrollPosition = slider.scrollWidth - slider.clientWidth;
+        }
+        slider.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+    });
+</script>
 {% endblock %}

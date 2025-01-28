@@ -1,20 +1,24 @@
 {% extends 'base.html' %}
 
-{% block title %}My Projects{% endblock %}
+{% block title %}Список проектов{% endblock %}
 
 {% block content %}
-<h1>My Projects</h1>
-<a href="{{ url_for('projects.create_project') }}">Create New Project</a>
-<ul>
-    {% for project in projects %}
-        <li>
-            <h2>{{ project.title }}</h2>
-            <p>{{ project.description }}</p>
-            <a href="{{ url_for('projects.edit_project', project_id=project.id) }}">Edit</a>
-            <form method="post" action="{{ url_for('projects.delete_project', project_id=project.id) }}" style="display:inline;">
-                <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
-            </form>
-        </li>
-    {% endfor %}
-</ul>
+<div class="mui-container">
+    <div class="mui--text-headline">Мои проекты</div>
+    <a href="{{ url_for('projects.create') }}" class="mui-btn mui-btn--raised mui-btn--primary mui--pull-right">Добавить проект</a>
+</div>
+
+<div class="mui-container">
+    {% if projects %}
+        {% for project in projects %}
+            <div class="mui-panel">
+                <h3>{{ project.title }}</h3>
+                <p>{{ project.description[:100] }}...</p>
+                <a href="{{ url_for('rating_comments.project_detail', project_id=project.id) }}" class="mui-btn mui-btn--flat mui-btn--primary">Подробнее</a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Проектов пока нет. Создайте свой первый проект!</p>
+    {% endif %}
+</div>
 {% endblock %}

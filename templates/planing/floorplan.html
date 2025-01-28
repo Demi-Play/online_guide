@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+
+{% block title %}Интерактивная планировка{% endblock %}
+
+{% block content %}
+<div class="mui-container">
+    <h1 class="mui--text-headline">Интерактивная планировка</h1>
+    
+    <!-- 2D-план -->
+    <div class="mui-panel">
+        <canvas id="floorplan-canvas" width="400" height="300" style="border:1px solid #000;"></canvas>
+    </div>
+
+    <!-- Панель инструментов -->
+    <div class="mui-panel">
+        <h2>Панель инструментов</h2>
+        <button id="add-wall" class="mui-btn mui-btn--primary">Добавить стену</button>
+        <button id="add-furniture" class="mui-btn mui-btn--primary">Добавить мебель</button>
+        <button id="delete-object" class="mui-btn mui-btn--danger">Удалить объект</button>
+    </div>
+
+    <!-- Боковая панель с информацией о выбранном объекте -->
+    <div class="mui-panel">
+        <h2>Информация о выбранном объекте</h2>
+        <label for="object-width">Ширина:</label>
+        <input id="object-width" type="number" value="0" disabled>
+        <br>
+        <label for="object-height">Высота:</label>
+        <input id="object-height" type="number" value="0" disabled>
+        <br>
+        <label for="object-rotation">Угол поворота:</label>
+        <input id="object-rotation" type="number" value="0" disabled>
+        <br>
+        <label for="object-x">X (позиция):</label>
+        <input id="object-x" type="number" value="0">
+        <br>
+        <label for="object-y">Y (позиция):</label>
+        <input id="object-y" type="number" value="0">
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
+<script>
+    // Инициализация 2D-контекста с Fabric.js
+    const canvas2D = new fabric.Canvas('floorplan-canvas');
+    let selectedObject = null;
+
+    // Функция для добавления объекта в 2D
+    function addObject2D(objectType, left, top, width, height, fillColor) {
+        const object = new fabric.Rect({
+            left: left,
+            top: top,
+            width: width,
+            height: height,
+            fill: fillColor,
+            hasControls: true,
+            lockRotation: false,
+            selectable: true,
+        });
+
+        // Убираем текст, чтобы на сцене не отображались надписи
+        object.set({ name: objectType });
+
+        canvas2D.add(object);
+
+        object.on('selected', function () {
+            selectedObject = object;
+            updateObjectInfo(object);
+        });
+
+        object.on('deselected', function () {
+            selectedObject = null;
+            resetObjectInfo();
+        });
+
+        object.on('moving', function () {
+            if (selectedObject) {
+                updateObjectInfo(selectedObject);
+            }
+        });
+    }
+
+    // Функция для обновления информации о выбранном объекте
+    function updateObjectInfo(object) {
+        const width = object.width;
+        const height = object.height;
+        const rotation = object.angle;
+        const x = object.left;
+        const y = object.top;
+
+        document.getElementById('object-width').value = width;
+        document.getElementById('object-height').value = height;
+        document.getElementById('object-rotation').value = rotation;
+        document.getElementById('object-x').value = x;
+        document.getElementById('object-y').value = y;
+    }
+
+    // Функция для сброса информации о выбранном объекте
+    function resetObjectInfo() {
+        document.getElementById('object-width').value = 0;
+        document.getElementById('object-height').value = 0;
+        document.getElementById('object-rotation').value = 0;
+        document.getElementById('object-x').value = 0;
+        document.getElementById('object-y').value = 0;
+    }
+
+    // Функция для удаления объекта
+    function deleteSelectedObject() {
+        if (selectedObject) {
+            canvas2D.remove(selectedObject);
+            selectedObject = null;
+            resetObjectInfo();
+        }
+    }
+
+    // Функция для обновления свойств объекта
+    function updateObjectProperties() {
+        if (selectedObject) {
+            const width = parseFloat(document.getElementById('object-width').value);
+            const height = parseFloat(document.getElementById('object-height').value);
+            const rotation = parseFloat(document.getElementById('object-rotation').value);
+            const x = parseFloat(document.getElementById('object-x').value);
+            const y = parseFloat(document.getElementById('object-y').value);
+
+            selectedObject.set({
+                width: width,
+                height: height,
+                angle: rotation,
+                left: x,
+                top: y,
+            });
+
+            selectedObject.setCoords(); // Обновляем координаты после изменений
+            canvas2D.renderAll();
+        }
+    }
+
+    // Кнопка для добавления стены в 2D
+    document.getElementById('add-wall').addEventListener('click', function () {
+        addObject2D("Стена", 100, 100, 200, 20, '#B0C4DE');
+    });
+
+    // Кнопка для добавления мебели в 2D
+    document.getElementById('add-furniture').addEventListener('click', function () {
+        addObject2D("Шкаф", 300, 200, 50, 100, '#FFD700');
+    });
+
+    // Кнопка для удаления объекта
+    document.getElementById('delete-object').addEventListener('click', function () {
+        deleteSelectedObject();
+    });
+
+    // Обработчик изменения ширины объекта
+    document.getElementById('object-width').addEventListener('input', function () {
+        updateObjectProperties();
+    });
+
+    // Обработчик изменения высоты объекта
+    document.getElementById('object-height').addEventListener('input', function () {
+        updateObjectProperties();
+    });
+
+    // Обработчик изменения угла поворота объекта
+    document.getElementById('object-rotation').addEventListener('input', function () {
+        updateObjectProperties();
+    });
+
+    // Обработчик изменения координаты X объекта
+    document.getElementById('object-x').addEventListener('input', function () {
+        updateObjectProperties();
+    });
+
+    // Обработчик изменения координаты Y объекта
+    document.getElementById('object-y').addEventListener('input', function () {
+        updateObjectProperties();
+    });
+</script>
+{% endblock %}

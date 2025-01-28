@@ -1,12 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Онлайн гид</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <h1>Добро пожаловать в Онлайн Гид по ремонту и дизайну!</h1>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<div class="mui-container">
+    <div class="mui--text-display1">Добро пожаловать в Онлайн Гид!</div>
+    <p>Ищите вдохновение, создавайте проекты и делитесь идеями с другими!</p>
+
+    <h2 class="mui--text-title">Популярные проекты</h2>
+    <div class="mui-container-fluid">
+        {% for project in popular_projects %}
+            <div class="mui-panel">
+                <h3>{{ project.title }}</h3>
+                <p>{{ project.description[:100] }}...</p>
+                <a href="{{ url_for('projects.detail', project_id=project.id) }}" class="mui-btn mui-btn--flat mui-btn--primary">Подробнее</a>
+            </div>
+        {% endfor %}
+    </div>
+
+    <h2 class="mui--text-title">Категории</h2>
+    <div class="mui-container-fluid">
+        <div class="mui-btn-group">
+            <a href="#" class="mui-btn mui-btn--flat mui-btn--accent">Кухни</a>
+            <a href="#" class="mui-btn mui-btn--flat mui-btn--accent">Гостиные</a>
+            <a href="#" class="mui-btn mui-btn--flat mui-btn--accent">Спальни</a>
+            <a href="#" class="mui-btn mui-btn--flat mui-btn--accent">Ванные комнаты</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

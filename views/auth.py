@@ -19,25 +19,44 @@ def register():
             username=form.username.data,
             email=form.email.data,
         )
-        new_user.password = form.password.data  # Хэшируем пароль
-        db.session.add(new_user)
-        db.session.commit()
-        flash('Registration successful! Please log in.', 'success')
-        return redirect(url_for('auth.login'))
+        new_user.password = form.password.data
+        
+        try:
+            db.session.add(new_user)
+            db.session.commit()
+            print(f"User created: {new_user.username}, {new_user.email}")
+            flash('Registration successful! Please log in.', 'success')
+            return redirect(url_for('auth.login'))
+        except Exception as e:
+            db.session.rollback()
+            print(f"Error: {e}")
+            flash(f'Error: {e}', 'danger')
     return render_template('auth/register.html', form=form)
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
+        # Ищем пользователя по email
         user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            print(f"User found: {user.email}")  # Отладка: найден пользователь
+        else:
+            print("User not found.")  # Отладка: пользователь не найден
+
+        # Проверяем пароль
         if user and user.check_password(form.password.data):
-            # Логика успешного входа
+            print("Password check passed.")  # Отладка: пароль совпадает
             login_user(user=user)
             flash('Login successful!', 'success')
             return redirect(url_for('profile.view_profile'))
+
+        # Если данные неверные
         flash('Invalid email or password.', 'danger')
+        print("Invalid email or password.")  # Отладка: неверный email/пароль
+
     return render_template('auth/login.html', form=form)
+
 
 @auth_bp.route('/logout')
 @login_required

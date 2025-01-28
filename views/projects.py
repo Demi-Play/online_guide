@@ -5,19 +5,19 @@ from forms.project_forms import ProjectForm
 
 projects_bp = Blueprint('projects', __name__)
 
-@projects_bp.route('/projects', methods=['GET'])
+@projects_bp.route('/', methods=['GET'])
 @login_required
 def list_projects():
     projects = Project.query.filter_by(user_id=current_user.id).all()
     return render_template('projects/list.html', projects=projects)
 
-@projects_bp.route('/projects/new', methods=['GET', 'POST'])
+@projects_bp.route('/new', methods=['GET', 'POST'])
 @login_required
-def create_project():
+def create():
     form = ProjectForm()
     if form.validate_on_submit():
         new_project = Project(
-            title=form.title.data,
+            name=form.title.data,
             description=form.description.data,
             user_id=current_user.id
         )
@@ -27,7 +27,7 @@ def create_project():
         return redirect(url_for('projects.list_projects'))
     return render_template('projects/form.html', form=form, title="Create Project")
 
-@projects_bp.route('/projects/edit/<int:project_id>', methods=['GET', 'POST'])
+@projects_bp.route('/edit/<int:project_id>', methods=['GET', 'POST'])
 @login_required
 def edit_project(project_id):
     project = Project.query.filter_by(id=project_id, user_id=current_user.id).first_or_404()
@@ -40,7 +40,7 @@ def edit_project(project_id):
         return redirect(url_for('projects.list_projects'))
     return render_template('projects/form.html', form=form, title="Edit Project")
 
-@projects_bp.route('/projects/delete/<int:project_id>', methods=['POST'])
+@projects_bp.route('/delete/<int:project_id>', methods=['POST'])
 @login_required
 def delete_project(project_id):
     project = Project.query.filter_by(id=project_id, user_id=current_user.id).first_or_404()

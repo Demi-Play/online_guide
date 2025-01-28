@@ -1,19 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-</head>
-<body>
-    <h1>Register</h1>
-    <form method="POST">
-        {{ form.hidden_tag() }}
-        <p>{{ form.username.label }} {{ form.username(size=20) }}</p>
-        <p>{{ form.email.label }} {{ form.email(size=20) }}</p>
-        <p>{{ form.password.label }} {{ form.password(size=20) }}</p>
-        <p>{{ form.confirm_password.label }} {{ form.confirm_password(size=20) }}</p>
-        <p>{{ form.submit() }}</p>
-    </form>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+<h2 class="mui--text-headline">Регистрация</h2>
+<form method="POST" class="mui-form">
+    {{ form.hidden_tag() }}
+    <div class="mui-textfield">
+        {{ form.username.label }}
+        {{ form.username(size=20) }}
+    </div>
+    <div class="mui-textfield">
+        {{ form.email.label }}
+        {{ form.email(size=20) }}
+    </div>
+    <div class="mui-textfield">
+        {{ form.password.label }}
+        {{ form.password(size=20) }}
+    </div>
+    <div class="mui-textfield">
+        {{ form.confirm_password.label }} 
+        {{ form.confirm_password(size=20) }}
+    </div>
+    <button type="submit" class="mui-btn mui-btn--raised mui-btn--primary">{{ form.submit.label }}</button>
+</form>
+{% endblock %}
