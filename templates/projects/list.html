@@ -1,24 +1,30 @@
 {% extends 'base.html' %}
 
-{% block title %}Список проектов{% endblock %}
+{% block title %}
+  Список проектов
+{% endblock %}
 
 {% block content %}
-<div class="mui-container">
+  <div class="mui-container">
     <div class="mui--text-headline">Мои проекты</div>
     <a href="{{ url_for('projects.create') }}" class="mui-btn mui-btn--raised mui-btn--primary mui--pull-right">Добавить проект</a>
-</div>
+  </div>
 
-<div class="mui-container">
+  <div class="mui-container">
     {% if projects %}
-        {% for project in projects %}
-            <div class="mui-panel">
-                <h3>{{ project.title }}</h3>
-                <p>{{ project.description[:100] }}...</p>
-                <a href="{{ url_for('rating_comments.project_detail', project_id=project.id) }}" class="mui-btn mui-btn--flat mui-btn--primary">Подробнее</a>
-            </div>
-        {% endfor %}
+      {% for project in projects %}
+        <div class="mui-panel">
+          <h3>{{ project.name }}</h3>
+          <p>{{ project.description[:100] }}...</p>
+          <a href="{{ url_for('rating_comments.project_detail', project_id=project.id) }}" class="mui-btn mui-btn--flat mui-btn--primary">Подробнее</a>
+        </div>
+      {% endfor %}
     {% else %}
-        <p>Проектов пока нет. Создайте свой первый проект!</p>
+      <div class="mui-panel">
+        <h3>Проектов еще нет</h3>
+        <p>Будте превым!</p>
+        <a href="{{ url_for('projects.create') }}">Проектов пока нет. Создайте свой первый проект!</a>
+      </div>
     {% endif %}
-</div>
+  </div>
 {% endblock %}

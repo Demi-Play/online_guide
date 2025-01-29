@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ project.title }}{% endblock %}
+{% block title %}{{ project.name }}{% endblock %}
 
 {% block content %}
 <div class="mui-container">
@@ -10,6 +10,9 @@
         <p class="mui--text-body1">{{ project.description }}</p>
         
         <p class="mui--text-body1">Рейтинг проекта: {{ average_rating }}</p>
+        {% if current_user.id == project.user_id %}
+            <a href="{{ url_for('planer.index', project_id=project.id) }}" class="mui-btn mui-btn--success">Планировка</a>
+        {% endif %}
     </div>
 
     <!-- Рейтинг звёздочками -->

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D View</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+</head>
+<body>
+    <h1>3D View</h1>
+    <div id="3d-container" style="width: 100%; height: 600px;"></div>
+
+    <script>
+        // Получаем данные из шаблона Jinja
+        const floorData = {{ floor_data | tojson }};
+        
+        // Инициализация сцены
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('3d-container').appendChild(renderer.domElement);
+
+        // Добавляем освещение
+        const light = new THREE.AmbientLight(0x404040);  // soft white light
+        scene.add(light);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(5, 5, 5).normalize();
+        scene.add(directionalLight);
+
+        // Создаем и добавляем 3D объекты на основе данных из JSON
+        function createObject(data) {
+            const geometry = new THREE.BoxGeometry(data.width, data.height, 10); // 10 - глубина
+            const material = new THREE.MeshBasicMaterial({ color: data.color });
+            const cube = new THREE.Mesh(geometry, material);
+            cube.position.set(data.x, data.y, 0);  // Устанавливаем позицию
+            scene.add(cube);
+        }
+
+        // Применяем данные из JSON для создания объектов
+        floorData.floor_data.forEach(createObject);
+
+        // Камера и управление
+        camera.position.z = 500;
+
+        // Функция анимации
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Управление камерой с помощью мыши
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+        // Обработчик изменения размера окна
+        window.addEventListener('resize', function () {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            renderer.setSize(width, height);
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+        });
+    </script>
+</body>
+</html>

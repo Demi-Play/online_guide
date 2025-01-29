@@ -5,31 +5,131 @@
 {% block content %}
 <div class="mui-container">
     <h1 class="mui--text-headline">Интерактивная планировка</h1>
-    
+    <!-- Модальное окно для ввода размеров комнаты -->
+    <div id="roomModal" class="mui-panel modal">
+        <h2>Введите размеры комнаты</h2>
+        <label>Длина (м):</label>
+        <input id="room-length" type="number" value="500" max="600">
+        <br>
+        <label>Ширина (м):</label>
+        <input id="room-width" type="number" value="300" max="400">
+        <br>
+        <button id="generate-room" class="mui-btn mui-btn--primary">Создать комнату</button>
+    </div>
     <!-- 2D-план -->
     <div class="mui-panel">
-        <canvas id="floorplan-canvas" width="400" height="300" style="border:1px solid #000;"></canvas>
+        <canvas id="floorplan-canvas" width="600" height="400" style="border:1px solid #000;"></canvas>
     </div>
 
     <!-- Панель инструментов -->
     <div class="mui-panel">
-        <h2>Панель инструментов</h2>
-        <button id="add-wall" class="mui-btn mui-btn--primary">Добавить стену</button>
-        <button id="add-furniture" class="mui-btn mui-btn--primary">Добавить мебель</button>
+        <h2>Добавить мебель</h2>
+    
+        <!-- Кухня -->
+        <h3>Кухня</h3>
+        <button id="add-table" name="Стол" class="mui-btn mui-btn--primary">
+            Стол
+        </button>
+        <button id="add-chair" name="Стул" class="mui-btn mui-btn--primary">
+            Стул
+        </button>
+        <button id="add-kitchen-set" name="Кухонный гарнитур" class="mui-btn mui-btn--primary">
+            Кухонный гарнитур
+        </button>
+        <button id="add-fridge" name="Холодильник" class="mui-btn mui-btn--primary">
+            Холодильник
+        </button>
+        <button id="add-stove"  name="Плита" class="mui-btn mui-btn--primary">
+            Плита
+        </button>
+        <button id="add-microwave" name="Микроволновка" class="mui-btn mui-btn--primary">
+            Микроволновка
+        </button>
+        <button id="add-oven" name="Духовка" class="mui-btn mui-btn--primary">
+            Духовка
+        </button>
+    
+        <!-- Гостиная -->
+        <h3>Гостиная</h3>
+        <button id="add-sofa" name="Диван" class="mui-btn mui-btn--primary">
+            Диван
+        </button>
+        <button id="add-armchair" name="Кресло" class="mui-btn mui-btn--primary">
+            Кресло
+        </button>
+        <button id="add-tv" name="Телевизор" class="mui-btn mui-btn--primary">
+            Телевизор
+        </button>
+        <button id="add-tv-stand" name="Тумба под телевизор" class="mui-btn mui-btn--primary">
+            Тумба под телевизор
+        </button>
+        <button id="add-bookshelf" name="Книжная полка" class="mui-btn mui-btn--primary">
+            Книжная полка
+        </button>
+        <button id="add-coffee-table" name="Кофейный столик" class="mui-btn mui-btn--primary">
+            Кофейный столик
+        </button>
+    
+        <!-- Спальня -->
+        <h3>Спальня</h3>
+        <button id="add-bed" name="Кровать" class="mui-btn mui-btn--primary">
+            Кровать
+        </button>
+        <button id="add-nightstand" name="Прикроватная тумбочка" class="mui-btn mui-btn--primary">
+            Прикроватная тумбочка
+        </button>
+        <button id="add-wardrobe" name="Шкаф" class="mui-btn mui-btn--primary">
+            Шкаф
+        </button>
+        <button id="add-mirror" name="Зеркало" class="mui-btn mui-btn--primary">
+            Зеркало
+        </button>
+    
+        <!-- Ванная -->
+        <h3>Ванная</h3>
+        <button id="add-bathtub" name="Ванна" class="mui-btn mui-btn--primary">
+            Ванна
+        </button>
+        <button id="add-toilet" name="Унитаз" class="mui-btn mui-btn--primary">
+            Унитаз
+        </button>
+        <button id="add-sink" name="Раковина" class="mui-btn mui-btn--primary">
+            Раковина
+        </button>
+        <button id="add-washing-machine" name="Стиральная машина" class="mui-btn mui-btn--primary">
+            Стиральная машина
+        </button>
+    
+        <!-- Офис -->
+        <h3>Офис</h3>
+        <button id="add-desk" name="Рабочий стол" class="mui-btn mui-btn--primary">
+            Рабочий стол
+        </button>
+        <button id="add-office-chair" name="Офисное кресло" class="mui-btn mui-btn--primary">
+            Офисное кресло
+        </button>
+        <button id="add-computer" name="Компьютер" class="mui-btn mui-btn--primary">
+            Компьютер
+        </button>
+        <button id="add-shelves" name="Полки" class="mui-btn mui-btn--primary">
+            Полки
+        </button>
+    
         <button id="delete-object" class="mui-btn mui-btn--danger">Удалить объект</button>
     </div>
+    
 
     <!-- Боковая панель с информацией о выбранном объекте -->
     <div class="mui-panel">
-        <h2>Информация о выбранном объекте</h2>
+        <h2>Информация об объекте</h2>
+        <label for="object-name">Название:</label>
+        <input id="object-name" type="text" disabled>
+        <br>
         <label for="object-width">Ширина:</label>
         <input id="object-width" type="number" value="0" disabled>
         <br>
         <label for="object-height">Высота:</label>
         <input id="object-height" type="number" value="0" disabled>
-        <br>
-        <label for="object-rotation">Угол поворота:</label>
-        <input id="object-rotation" type="number" value="0" disabled>
         <br>
         <label for="object-x">X (позиция):</label>
         <input id="object-x" type="number" value="0">
@@ -38,15 +138,17 @@
         <input id="object-y" type="number" value="0">
     </div>
 </div>
+<!-- Включи кнопку для отправки данных -->
+<button onclick="sendFloorDataToServer()">Отправить данные 3D</button>
+
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
 <script>
-    // Инициализация 2D-контекста с Fabric.js
     const canvas2D = new fabric.Canvas('floorplan-canvas');
     let selectedObject = null;
-
-    // Функция для добавления объекта в 2D
-    function addObject2D(objectType, left, top, width, height, fillColor) {
+    
+    function addObject2D(name, left, top, width, height, fillColor) {
         const object = new fabric.Rect({
             left: left,
             top: top,
@@ -56,55 +158,58 @@
             hasControls: true,
             lockRotation: false,
             selectable: true,
+            objectCaching: false, // Избегает багов с обновлением
+            name: name
         });
-
-        // Убираем текст, чтобы на сцене не отображались надписи
-        object.set({ name: objectType });
-
+    
+        object.setControlsVisibility({
+            mt: true, mb: true, ml: true, mr: true,
+            tl: true, tr: true, bl: true, br: true
+        });
+    
         canvas2D.add(object);
 
-        object.on('selected', function () {
-            selectedObject = object;
-            updateObjectInfo(object);
+        canvas2D.on('selection:created', function (event) {
+            selectedObject = event.selected[0];
+            updateSidebar();
         });
-
-        object.on('deselected', function () {
+        
+        canvas2D.on('selection:cleared', function () {
             selectedObject = null;
             resetObjectInfo();
         });
 
-        object.on('moving', function () {
-            if (selectedObject) {
-                updateObjectInfo(selectedObject);
-            }
-        });
+        object.on('moving', updateSidebar);
+        object.on('scaling', updateSidebar);
+        object.on('rotating', updateSidebar);
     }
+    
+        
+        
+        
+    
 
-    // Функция для обновления информации о выбранном объекте
-    function updateObjectInfo(object) {
-        const width = object.width;
-        const height = object.height;
-        const rotation = object.angle;
-        const x = object.left;
-        const y = object.top;
+    
 
-        document.getElementById('object-width').value = width;
-        document.getElementById('object-height').value = height;
-        document.getElementById('object-rotation').value = rotation;
-        document.getElementById('object-x').value = x;
-        document.getElementById('object-y').value = y;
+    function updateSidebar() {
+        if (selectedObject) {
+            document.getElementById("object-name").textContent = selectedObject.name;
+            document.getElementById("object-width").value = selectedObject.width;
+            document.getElementById("object-height").value = selectedObject.height;
+            document.getElementById('object-x').value = selectedObject.left;
+            document.getElementById('object-y').value = selectedObject.top;
+        } else {
+            document.getElementById("object-name").textContent = "Не выбрано";
+        }
     }
+    
 
-    // Функция для сброса информации о выбранном объекте
     function resetObjectInfo() {
+        document.getElementById('object-name').value = "";
         document.getElementById('object-width').value = 0;
         document.getElementById('object-height').value = 0;
-        document.getElementById('object-rotation').value = 0;
-        document.getElementById('object-x').value = 0;
-        document.getElementById('object-y').value = 0;
     }
 
-    // Функция для удаления объекта
     function deleteSelectedObject() {
         if (selectedObject) {
             canvas2D.remove(selectedObject);
@@ -113,66 +218,187 @@
         }
     }
 
-    // Функция для обновления свойств объекта
-    function updateObjectProperties() {
-        if (selectedObject) {
-            const width = parseFloat(document.getElementById('object-width').value);
-            const height = parseFloat(document.getElementById('object-height').value);
-            const rotation = parseFloat(document.getElementById('object-rotation').value);
-            const x = parseFloat(document.getElementById('object-x').value);
-            const y = parseFloat(document.getElementById('object-y').value);
+    function createRoom(length, width) {
+        canvas2D.clear();
 
-            selectedObject.set({
-                width: width,
-                height: height,
-                angle: rotation,
-                left: x,
-                top: y,
-            });
-
-            selectedObject.setCoords(); // Обновляем координаты после изменений
-            canvas2D.renderAll();
-        }
+        // Стены (автоматически по размерам комнаты)
+        addObject2D("Стена", 0, 0, length, 10, '#A9A9A9'); // Верхняя
+        addObject2D("Стена", 0, width - 10, length, 10, '#A9A9A9'); // Нижняя
+        addObject2D("Стена", 0, 0, 10, width, '#A9A9A9'); // Левая
+        addObject2D("Стена", length - 10, 0, 10, width, '#A9A9A9'); // Правая
     }
 
-    // Кнопка для добавления стены в 2D
-    document.getElementById('add-wall').addEventListener('click', function () {
-        addObject2D("Стена", 100, 100, 200, 20, '#B0C4DE');
+    
+
+    document.getElementById('delete-object').addEventListener('click', deleteSelectedObject);
+    
+    document.getElementById('generate-room').addEventListener('click', function () {
+        const length = parseInt(document.getElementById('room-length').value);
+        const width = parseInt(document.getElementById('room-width').value);
+        createRoom(length, width);
+        document.getElementById('roomModal').style.display = 'none';
     });
 
-    // Кнопка для добавления мебели в 2D
-    document.getElementById('add-furniture').addEventListener('click', function () {
-        addObject2D("Шкаф", 300, 200, 50, 100, '#FFD700');
+    document.getElementById('add-table').addEventListener('click', function () {
+        addObject2D("Стол", 50, 50, 120, 80, '#A0522D');
+    });
+    
+    document.getElementById('add-chair').addEventListener('click', function () {
+        addObject2D("Стул", 70, 70, 40, 40, '#8B4513');
+    });
+    
+    document.getElementById('add-kitchen-set').addEventListener('click', function () {
+        addObject2D("Кухонный гарнитур", 50, 50, 200, 60, '#8B4513');
+    });
+    
+    document.getElementById('add-fridge').addEventListener('click', function () {
+        addObject2D("Холодильник", 300, 50, 50, 100, '#D3D3D3');
+    });
+    
+    document.getElementById('add-stove').addEventListener('click', function () {
+        addObject2D("Плита", 350, 50, 60, 60, '#696969');
+    });
+    
+    document.getElementById('add-microwave').addEventListener('click', function () {
+        addObject2D("Микроволновка", 200, 50, 50, 30, '#C0C0C0');
+    });
+    
+    document.getElementById('add-oven').addEventListener('click', function () {
+        addObject2D("Духовка", 220, 80, 50, 60, '#B22222');
+    });
+    
+    document.getElementById('add-sofa').addEventListener('click', function () {
+        addObject2D("Диван", 100, 200, 200, 100, '#008000');
+    });
+    
+    document.getElementById('add-armchair').addEventListener('click', function () {
+        addObject2D("Кресло", 350, 200, 80, 80, '#006400');
+    });
+    
+    document.getElementById('add-tv').addEventListener('click', function () {
+        addObject2D("Телевизор", 500, 50, 100, 60, '#000000');
+    });
+    
+    document.getElementById('add-tv-stand').addEventListener('click', function () {
+        addObject2D("Тумба под телевизор", 500, 120, 100, 40, '#8B4513');
+    });
+    
+    document.getElementById('add-bookshelf').addEventListener('click', function () {
+        addObject2D("Книжная полка", 50, 300, 80, 200, '#A52A2A');
+    });
+    
+    document.getElementById('add-coffee-table').addEventListener('click', function () {
+        addObject2D("Кофейный столик", 150, 300, 100, 60, '#8B4513');
+    });
+    
+    document.getElementById('add-bed').addEventListener('click', function () {
+        addObject2D("Кровать", 100, 150, 200, 100, '#FFD700');
+    });
+    
+    document.getElementById('add-nightstand').addEventListener('click', function () {
+        addObject2D("Прикроватная тумбочка", 320, 150, 50, 50, '#8B4513');
+    });
+    
+    document.getElementById('add-wardrobe').addEventListener('click', function () {
+        addObject2D("Шкаф", 500, 200, 100, 200, '#A0522D');
+    });
+    
+    document.getElementById('add-mirror').addEventListener('click', function () {
+        addObject2D("Зеркало", 550, 50, 80, 120, '#87CEFA');
+    });
+    
+    document.getElementById('add-bathtub').addEventListener('click', function () {
+        addObject2D("Ванна", 300, 100, 150, 60, '#ADD8E6');
+    });
+    
+    document.getElementById('add-toilet').addEventListener('click', function () {
+        addObject2D("Унитаз", 350, 200, 40, 60, '#FFFFFF');
+    });
+    
+    document.getElementById('add-sink').addEventListener('click', function () {
+        addObject2D("Раковина", 400, 200, 60, 40, '#C0C0C0');
+    });
+    
+    document.getElementById('add-washing-machine').addEventListener('click', function () {
+        addObject2D("Стиральная машина", 450, 200, 70, 60, '#D3D3D3');
+    });
+    
+    document.getElementById('add-desk').addEventListener('click', function () {
+        addObject2D("Рабочий стол", 200, 200, 120, 60, '#A52A2A');
+    });
+    
+    document.getElementById('add-office-chair').addEventListener('click', function () {
+        addObject2D("Офисное кресло", 230, 270, 50, 50, '#0000CD');
+    });
+    
+    document.getElementById('add-computer').addEventListener('click', function () {
+        addObject2D("Компьютер", 220, 180, 40, 30, '#000000');
+    });
+    
+    document.getElementById('add-shelves').addEventListener('click', function () {
+        addObject2D("Полки", 100, 350, 80, 100, '#8B4513');
+    });
+    
+
+    // Открываем модальное окно при загрузке
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById('roomModal').style.display = 'block';
     });
 
-    // Кнопка для удаления объекта
-    document.getElementById('delete-object').addEventListener('click', function () {
-        deleteSelectedObject();
-    });
+    function draw() {
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+        objects.forEach(obj => {
+            ctx.fillStyle = obj.color;
+            ctx.fillRect(obj.x, obj.y, obj.width, obj.height);
+        });
+    }
+    
+    function sendFloorDataToServer() {
+        const floorData = {
+            floor_data: canvas2D.getObjects().map(obj => ({
+                name: obj.name,
+                x: obj.left,           // Координата X левого верхнего угла
+                y: obj.top,             // Координата Y левого верхнего угла
+                width: obj.width,       // Ширина объекта
+                height: obj.height,     // Высота объекта
+                color: obj.fill,        // Цвет объекта
+                
+                // Добавляем дополнительные координаты
+                center_x: obj.left + obj.width / 2,   // Центральная координата X
+                center_y: obj.top + obj.height / 2,   // Центральная координата Y
+                
+                // Координаты углов
+                top_left: { x: obj.left, y: obj.top },
+                top_right: { x: obj.left + obj.width, y: obj.top },
+                bottom_left: { x: obj.left, y: obj.top + obj.height },
+                bottom_right: { x: obj.left + obj.width, y: obj.top + obj.height }
+            })).filter(obj => obj.name !== "Стена")  // Исключаем стены из передачи
+        };
+    
+        fetch('/planer/view3d/{{ project_id }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(floorData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.redirect_url) {
+                window.location.href = data.redirect_url;
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+            alert('Не удалось сохранить планировку');
+        });
+    }
+    
+    
+    
 
-    // Обработчик изменения ширины объекта
-    document.getElementById('object-width').addEventListener('input', function () {
-        updateObjectProperties();
-    });
-
-    // Обработчик изменения высоты объекта
-    document.getElementById('object-height').addEventListener('input', function () {
-        updateObjectProperties();
-    });
-
-    // Обработчик изменения угла поворота объекта
-    document.getElementById('object-rotation').addEventListener('input', function () {
-        updateObjectProperties();
-    });
-
-    // Обработчик изменения координаты X объекта
-    document.getElementById('object-x').addEventListener('input', function () {
-        updateObjectProperties();
-    });
-
-    // Обработчик изменения координаты Y объекта
-    document.getElementById('object-y').addEventListener('input', function () {
-        updateObjectProperties();
-    });
 </script>
 {% endblock %}

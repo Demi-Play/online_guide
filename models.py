@@ -2,6 +2,8 @@ from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from datetime import datetime
+from sqlalchemy.dialects.postgresql import JSON
+
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
@@ -44,6 +46,8 @@ class Project(db.Model):
     ratings = db.relationship('Rating', backref='project', lazy=True)
     comments = db.relationship('Comment', backref='project', lazy=True)
     favorites = db.relationship('Favorite', backref='project', lazy=True)
+    
+    floor_data = db.Column(JSON, nullable=True)  # Хранение данных 3D в формате JSON
 
 class Rating(db.Model):
     __tablename__ = 'ratings'
