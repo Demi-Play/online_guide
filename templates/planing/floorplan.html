@@ -148,7 +148,7 @@
     const canvas2D = new fabric.Canvas('floorplan-canvas');
     let selectedObject = null;
     
-    function addObject2D(name, left, top, width, height, fillColor) {
+    function addObject2D(name, left, top, width, height, fillColor, z) {
         const object = new fabric.Rect({
             left: left,
             top: top,
@@ -159,7 +159,8 @@
             lockRotation: false,
             selectable: true,
             objectCaching: false, // Избегает багов с обновлением
-            name: name
+            name: name,
+            z: z
         });
     
         object.setControlsVisibility({
@@ -222,10 +223,10 @@
         canvas2D.clear();
 
         // Стены (автоматически по размерам комнаты)
-        addObject2D("Стена", 0, 0, length, 10, '#A9A9A9'); // Верхняя
-        addObject2D("Стена", 0, width - 10, length, 10, '#A9A9A9'); // Нижняя
-        addObject2D("Стена", 0, 0, 10, width, '#A9A9A9'); // Левая
-        addObject2D("Стена", length - 10, 0, 10, width, '#A9A9A9'); // Правая
+        addObject2D("Стена", 0, 0, length, 10, '#A9A9A9', 50); // Верхняя
+        addObject2D("Стена", 0, width - 10, length, 10, '#A9A9A9', 50); // Нижняя
+        addObject2D("Стена", 0, 0, 10, width, '#A9A9A9', 50); // Левая
+        addObject2D("Стена", length - 10, 0, 10, width, '#A9A9A9', 50); // Правая
     }
 
     
@@ -240,103 +241,103 @@
     });
 
     document.getElementById('add-table').addEventListener('click', function () {
-        addObject2D("Стол", 50, 50, 120, 80, '#A0522D');
+        addObject2D("Стол", 50, 50, 120, 80, '#A0522D', 25);
     });
     
     document.getElementById('add-chair').addEventListener('click', function () {
-        addObject2D("Стул", 70, 70, 40, 40, '#8B4513');
+        addObject2D("Стул", 70, 70, 40, 40, '#8B4513', 15);
     });
     
     document.getElementById('add-kitchen-set').addEventListener('click', function () {
-        addObject2D("Кухонный гарнитур", 50, 50, 200, 60, '#8B4513');
+        addObject2D("Кухонный гарнитур", 50, 50, 200, 60, '#8B4513', 25);
     });
     
     document.getElementById('add-fridge').addEventListener('click', function () {
-        addObject2D("Холодильник", 300, 50, 50, 100, '#D3D3D3');
+        addObject2D("Холодильник", 300, 50, 50, 100, '#D3D3D3', 40);
     });
     
     document.getElementById('add-stove').addEventListener('click', function () {
-        addObject2D("Плита", 350, 50, 60, 60, '#696969');
+        addObject2D("Плита", 350, 50, 60, 60, '#696969', 25);
     });
     
     document.getElementById('add-microwave').addEventListener('click', function () {
-        addObject2D("Микроволновка", 200, 50, 50, 30, '#C0C0C0');
+        addObject2D("Микроволновка", 200, 50, 50, 30, '#C0C0C0', 30);
     });
     
     document.getElementById('add-oven').addEventListener('click', function () {
-        addObject2D("Духовка", 220, 80, 50, 60, '#B22222');
+        addObject2D("Духовка", 220, 80, 50, 60, '#B22222', 25);
     });
     
     document.getElementById('add-sofa').addEventListener('click', function () {
-        addObject2D("Диван", 100, 200, 200, 100, '#008000');
+        addObject2D("Диван", 100, 200, 200, 100, '#008000', 15);
     });
     
     document.getElementById('add-armchair').addEventListener('click', function () {
-        addObject2D("Кресло", 350, 200, 80, 80, '#006400');
+        addObject2D("Кресло", 350, 200, 80, 80, '#006400', 15);
     });
     
     document.getElementById('add-tv').addEventListener('click', function () {
-        addObject2D("Телевизор", 500, 50, 100, 60, '#000000');
+        addObject2D("Телевизор", 500, 50, 100, 60, '#000000', 25);
     });
     
     document.getElementById('add-tv-stand').addEventListener('click', function () {
-        addObject2D("Тумба под телевизор", 500, 120, 100, 40, '#8B4513');
+        addObject2D("Тумба под телевизор", 500, 120, 100, 40, '#8B4513', 20);
     });
     
     document.getElementById('add-bookshelf').addEventListener('click', function () {
-        addObject2D("Книжная полка", 50, 300, 80, 200, '#A52A2A');
+        addObject2D("Книжная полка", 50, 300, 80, 200, '#A52A2A', 25);
     });
     
     document.getElementById('add-coffee-table').addEventListener('click', function () {
-        addObject2D("Кофейный столик", 150, 300, 100, 60, '#8B4513');
+        addObject2D("Кофейный столик", 150, 300, 100, 60, '#8B4513', 25);
     });
     
     document.getElementById('add-bed').addEventListener('click', function () {
-        addObject2D("Кровать", 100, 150, 200, 100, '#FFD700');
+        addObject2D("Кровать", 100, 150, 200, 100, '#FFD700', 15);
     });
     
     document.getElementById('add-nightstand').addEventListener('click', function () {
-        addObject2D("Прикроватная тумбочка", 320, 150, 50, 50, '#8B4513');
+        addObject2D("Прикроватная тумбочка", 320, 150, 50, 50, '#8B4513', 25);
     });
     
     document.getElementById('add-wardrobe').addEventListener('click', function () {
-        addObject2D("Шкаф", 500, 200, 100, 200, '#A0522D');
+        addObject2D("Шкаф", 500, 200, 100, 200, '#A0522D', 40);
     });
     
     document.getElementById('add-mirror').addEventListener('click', function () {
-        addObject2D("Зеркало", 550, 50, 80, 120, '#87CEFA');
+        addObject2D("Зеркало", 550, 50, 80, 120, '#87CEFA', 50);
     });
     
     document.getElementById('add-bathtub').addEventListener('click', function () {
-        addObject2D("Ванна", 300, 100, 150, 60, '#ADD8E6');
+        addObject2D("Ванна", 300, 100, 150, 60, '#ADD8E6', 25);
     });
     
     document.getElementById('add-toilet').addEventListener('click', function () {
-        addObject2D("Унитаз", 350, 200, 40, 60, '#FFFFFF');
+        addObject2D("Унитаз", 350, 200, 40, 60, '#FFFFFF', 15);
     });
     
     document.getElementById('add-sink').addEventListener('click', function () {
-        addObject2D("Раковина", 400, 200, 60, 40, '#C0C0C0');
+        addObject2D("Раковина", 400, 200, 60, 40, '#C0C0C0', 25);
     });
     
     document.getElementById('add-washing-machine').addEventListener('click', function () {
-        addObject2D("Стиральная машина", 450, 200, 70, 60, '#D3D3D3');
+        addObject2D("Стиральная машина", 450, 200, 70, 60, '#D3D3D3', 25);
     });
     
     document.getElementById('add-desk').addEventListener('click', function () {
-        addObject2D("Рабочий стол", 200, 200, 120, 60, '#A52A2A');
+        addObject2D("Рабочий стол", 200, 200, 120, 60, '#A52A2A', 25);
     });
     
     document.getElementById('add-office-chair').addEventListener('click', function () {
-        addObject2D("Офисное кресло", 230, 270, 50, 50, '#0000CD');
+        addObject2D("Офисное кресло", 230, 270, 50, 50, '#0000CD', 15);
     });
     
     document.getElementById('add-computer').addEventListener('click', function () {
-        addObject2D("Компьютер", 220, 180, 40, 30, '#000000');
+        addObject2D("Компьютер", 220, 180, 40, 30, '#000000', 30);
     });
     
     document.getElementById('add-shelves').addEventListener('click', function () {
-        addObject2D("Полки", 100, 350, 80, 100, '#8B4513');
+        addObject2D("Полки", 100, 350, 80, 100, '#8B4513', 35);
     });
     
 
@@ -364,8 +365,9 @@
                 y: obj.top,             // Координата Y левого верхнего угла
                 width: obj.width,       // Ширина объекта
                 height: obj.height,     // Высота объекта
-                color: obj.fill,        // Цвет объекта
-                
+                color: obj.fill,       // Цвет объекта
+                z: obj.z,
+
                 // Добавляем дополнительные координаты
                 center_x: obj.left + obj.width / 2,   // Центральная координата X
                 center_y: obj.top + obj.height / 2,   // Центральная координата Y
@@ -375,7 +377,8 @@
                 top_right: { x: obj.left + obj.width, y: obj.top },
                 bottom_left: { x: obj.left, y: obj.top + obj.height },
                 bottom_right: { x: obj.left + obj.width, y: obj.top + obj.height }
-            })).filter(obj => obj.name !== "Стена")  // Исключаем стены из передачи
+            }))
+            // .filter(obj => obj.name !== "Стена")  // Исключаем стены из передачи
         };
     
         fetch('/planer/view3d/{{ project_id }}', {

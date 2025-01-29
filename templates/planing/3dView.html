@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D View</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
 </head>
 <body>
     <h1>3D View</h1>
@@ -14,47 +14,109 @@
     <script>
         // Получаем данные из шаблона Jinja
         const floorData = {{ floor_data | tojson }};
-        
+
         // Инициализация сцены
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer();
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.getElementById('3d-container').appendChild(renderer.domElement);
 
         // Добавляем освещение
-        const light = new THREE.AmbientLight(0x404040);  // soft white light
+        const light = new THREE.AmbientLight(0x404040);
         scene.add(light);
 
         const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-        directionalLight.position.set(5, 5, 5).normalize();
+        directionalLight.position.set(5, 5, 2).normalize();
         scene.add(directionalLight);
+
+        // Храним объекты, чтобы иметь доступ к ним позже
+        const objects = [];
 
         // Создаем и добавляем 3D объекты на основе данных из JSON
         function createObject(data) {
-            const geometry = new THREE.BoxGeometry(data.width, data.height, 10); // 10 - глубина
+            const geometry = new THREE.BoxGeometry(data.width, data.height, 50);
             const material = new THREE.MeshBasicMaterial({ color: data.color });
             const cube = new THREE.Mesh(geometry, material);
-            cube.position.set(data.x, data.y, 0);  // Устанавливаем позицию
+            cube.position.set(data.x, data.y, data.z); // Подняли выше, чтобы было видно
             scene.add(cube);
+            objects.push(cube); // Добавляем объект в массив
+            
+            // Создание контуров (обводки)
+            const edges = new THREE.EdgesGeometry(geometry);
+            const lineMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
+            const line = new THREE.LineSegments(edges, lineMaterial);
+            cube.add(line);
         }
 
         // Применяем данные из JSON для создания объектов
         floorData.floor_data.forEach(createObject);
 
-        // Камера и управление
-        camera.position.z = 500;
+        // Устанавливаем камеру так, чтобы видеть все объекты
+        camera.position.set(0, 0, 200);
+
+        // Добавляем OrbitControls для вращения сцены
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true; // Добавляем инерцию вращения
+        controls.dampingFactor = 0.05;
+        controls.screenSpacePanning = false;
+        controls.maxDistance = 500;
+        controls.minDistance = 50;
+
+        // Обработчик выделения объекта
+        let selectedObject = null;
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0); // Плоскость, на которой будем двигать объекты
+
+        function onMouseMove(event) {
+            // Переводим координаты мыши в нормализованные координаты устройства (-1 to +1)
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            if (selectedObject) {
+                // Находим пересечение с плоскостью
+                const intersects = getIntersection(event);
+                if (intersects.length > 0) {
+                    const point = intersects[0].point;
+                    selectedObject.position.copy(point); // Обновляем позицию объекта
+                }
+            }
+        }
+
+        function onMouseDown(event) {
+            const intersects = getIntersection(event);
+            if (intersects.length > 0) {
+                selectedObject = intersects[0].object; // Выбираем объект, на который кликнули
+            }
+        }
+
+        function onMouseUp() {
+            selectedObject = null; // Сбрасываем выбранный объект
+        }
+
+        function getIntersection(event) {
+            // Устанавливаем луч из камеры
+            raycaster.setFromCamera(mouse, camera);
+
+            // Находим пересечение луча с плоскостью
+            const intersects = raycaster.intersectObject(plane);
+            return intersects;
+        }
+
+        // Слушаем события мыши
+        window.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('mousedown', onMouseDown);
+        window.addEventListener('mouseup', onMouseUp);
 
         // Функция анимации
         function animate() {
             requestAnimationFrame(animate);
+            controls.update();
             renderer.render(scene, camera);
         }
 
         animate();
-
-        // Управление камерой с помощью мыши
-        const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
         // Обработчик изменения размера окна
         window.addEventListener('resize', function () {
