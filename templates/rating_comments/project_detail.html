@@ -15,6 +15,12 @@
         {% endif %}
     </div>
 
+    <div class="mui-panel">
+        <h2 class="mui--text-subhead">Предпросмотр</h2>
+        <div id="preview-container" style="width: 200px; height: 200px; border: 1px solid #ccc;"></div>
+    </div>
+    
+
     <!-- Рейтинг звёздочками -->
     <div class="mui-panel">
         <h2 class="mui--text-headline">Оцените этот проект</h2>
@@ -123,6 +129,8 @@
 </style>
 
 <!-- Слайдер логика -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
 <script>
     const slider = document.querySelector('.comments');
     const prevBtn = document.querySelector('.prev-btn');
@@ -142,6 +150,44 @@
             scrollPosition = slider.scrollWidth - slider.clientWidth;
         }
         slider.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const previewContainer = document.getElementById("preview-container");
+
+        // Создание сцены
+        const previewScene = new THREE.Scene();
+        const previewCamera = new THREE.PerspectiveCamera(50, 1, 0.1, 500);
+        const previewRenderer = new THREE.WebGLRenderer({ antialias: true });
+        previewRenderer.setSize(200, 200);
+        previewContainer.appendChild(previewRenderer.domElement);
+
+        // Добавляем свет
+        const light = new THREE.AmbientLight(0xaaaaaa);
+        previewScene.add(light);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(3, 3, 5).normalize();
+        previewScene.add(directionalLight);
+
+        // Создаем миниатюрные 3D-объекты
+        function createPreviewObject(data) {
+            const geometry = new THREE.BoxGeometry(data.width / 2, data.height / 2, 25);
+            const material = new THREE.MeshBasicMaterial({ color: data.color });
+            const cube = new THREE.Mesh(geometry, material);
+            cube.position.set(data.x / 2, data.y / 2, data.z / 2);
+            previewScene.add(cube);
+        }
+
+        // Используем те же данные, но рендерим их в миниатюре
+        const floorData = {{ project.floor_data | tojson }};
+        floorData.floor_data.forEach(createPreviewObject);
+
+        // Размещаем камеру
+        previewCamera.position.set(-200, 0, -200);
+        previewCamera.lookAt(new THREE.Vector3(0, 0, 0));
+
+        // Рендерим один раз (без анимации)
+        previewRenderer.render(previewScene, previewCamera);
     });
 </script>
 {% endblock %}

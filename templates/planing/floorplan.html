@@ -24,6 +24,7 @@
     <!-- Панель инструментов -->
     <div class="mui-panel">
         <h2>Добавить мебель</h2>
+        <button id="delete-object" class="mui-btn mui-btn--danger">Удалить объект</button>
     
         <!-- Кухня -->
         <h3>Кухня</h3>
@@ -115,7 +116,6 @@
             Полки
         </button>
     
-        <button id="delete-object" class="mui-btn mui-btn--danger">Удалить объект</button>
     </div>
     
 
@@ -377,8 +377,7 @@
                 top_right: { x: obj.left + obj.width, y: obj.top },
                 bottom_left: { x: obj.left, y: obj.top + obj.height },
                 bottom_right: { x: obj.left + obj.width, y: obj.top + obj.height }
-            }))
-            // .filter(obj => obj.name !== "Стена")  // Исключаем стены из передачи
+            })).filter(obj => obj.name !== "Стена")  // Исключаем стены из передачи
         };
     
         fetch('/planer/view3d/{{ project_id }}', {
