@@ -3,7 +3,7 @@
 {% block title %}{% if project %}Редактирование проекта{% else %}Новый проект{% endif %}{% endblock %}
 
 {% block content %}
-<h2 class="mui--text-headline">{% if project %}Редактирование проекта{% else %}Создание проекта{% endif %}</h2>
+<h2 class="mui--text-headline">{% if projectis %}Редактирование проекта{% else %}Создание проекта{% endif %}</h2>
 <form method="POST" class="mui-form">
     {{ form.hidden_tag() }}
     <div class="mui-textfield">
@@ -15,7 +15,7 @@
         {{ form.description }}
     </div>
     <button type="submit" class="mui-btn mui-btn--raised mui-btn--primary">
-        {% if project %}Сохранить{% else %}Создать{% endif %}
+        {% if projectis %}Сохранить{% else %}Создать{% endif %}
     </button>
 </form>
 {% endblock %}

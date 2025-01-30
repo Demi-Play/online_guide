@@ -13,9 +13,9 @@
 <div class="mui-container-fluid">
     {% for project in projects %}
         <div class="mui-panel">
-            <h4>{{ project.title }}</h4>
+            <h4>{{ project.name }}</h4>
             <p>{{ project.description }}</p>
-            <a href="{{ url_for('projects.view', project_id=project.id) }}" class="mui-btn mui-btn--flat">Подробнее</a>
+            <a href="/project/{{ project.id }}" class="mui-btn mui-btn--primary">Подробнее</a>
         </div>
     {% endfor %}
 </div>

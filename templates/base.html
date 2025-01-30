@@ -12,19 +12,77 @@
     <link href="https://cdn.jsdelivr.net/npm/muicss@0.10.3/dist/css/mui.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        .mui-appbar {
+            background-color: #333;
+            color: #fff;
+        }
+        
+        .mui-appbar .mui-btn {
+            color: #fff;
+            margin-right: 10px;  /* Добавляем отступ между кнопками */
+        }
+        
+        .mui-appbar .mui-btn:hover {
+            background-color: #555;
+        }
+        
+        .mui-dropdown-menu {
+            padding: 10px;  /* Добавляем внутренний отступ в выпадающем меню */
+        }
+        
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+        .lin {
+            text-decoration: none;
+            list-style-type: none;
+        }
+        .da { {
+            color: #41b31d;
+        }
+    </style>
 </head>
 <body>
     <header>
         <nav>
             <div class="mui-appbar mui--z-depth-4">
                 <div class="mui-container">
-                    <a href="/" class="mui-btn mui-btn--flat">Главная</a>
+                    <a href="/" class="mui-btn mui-btn--flat mui--text-title lin">Онлайн гид</a>
+                    
+                    <!-- Кнопки проектов -->
+                    <div class="mui-dropdown">
+                        <div class="mui-dropdown-menu">
+                            <a class="mui-btn mui-btn--flat mui-dropdown-toggle" href="/projects">Все проекты</a>
+                            <a class="mui-btn mui-btn--flat mui-dropdown-toggle" href="/projects/new">Создать проект</a> 
+                        </div>
+                    </div>
+                    
+                    <!-- Кнопки инструментов -->
+                    <div class="mui-dropdown">
+                        <div class="mui-dropdown-menu">
+                            <a class="mui-btn mui-btn--flat mui-dropdown-toggle" href="/calc">Калькулятор</a> 
+                        </div>
+                    </div>
+                    
+                    <!-- Кнопки пользователя -->
                     {% if current_user.is_authenticated %}
-                        <a href="{{ url_for('auth.logout') }}" class="mui-btn mui-btn--flat">Выйти</a>
-                        <a href="{{ url_for('profile.view_profile') }}" class="mui-btn mui-btn--flat">Профиль</a>
+                        <div class="mui-dropdown">
+                            <div class="mui-dropdown-menu">
+                                <a class="mui-btn mui-btn--flat mui-dropdown-toggle" href="{{ url_for('profile.view_profile') }}">Профиль</a> 
+                                <a class="mui-btn mui-btn--flat mui-dropdown-toggle" href="{{ url_for('auth.logout') }}">Выйти</a> 
+                            </div>
+                        </div>
                     {% else %}
-                        <a href="{{ url_for('auth.login') }}" class="mui-btn mui-btn--flat">Войти</a>
-                        <a href="{{ url_for('auth.register') }}" class="mui-btn mui-btn--flat">Регистрация</a>
+                        <a href="{{ url_for('auth.login') }}" class="mui-btn mui-btn--flat lin">Войти</a>
+                        <a href="{{ url_for('auth.register') }}" class="mui-btn mui-btn--flat lin">Регистрация</a>
                     {% endif %}
                 </div>
             </div>
@@ -37,7 +95,7 @@
     </main>
 
     <footer class="mui-container mui--text-center">
-        <p>&copy; {{ year }} Онлайн гид по ремонту</p>
+        <p>&copy; Кондратюк Вероника 2025 Онлайн гид по ремонту помещений</p>
     </footer>
 
     <!-- MUI JS -->

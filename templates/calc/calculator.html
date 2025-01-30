@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Калькулятор стоимости ремонта{% endblock %}
+
+{% block content %}
+<div class="mui-container">
+    <h1 class="mui--text-headline">Калькулятор стоимости ремонта</h1>
+    
+    <form method="post" class="mui-form">
+        {{ calculator_form.hidden_tag() }}
+        
+        <div class="mui-textfield">
+            {{ calculator_form.room_length.label }}
+            {{ calculator_form.room_length }}
+        </div>
+        
+        <div class="mui-textfield">
+            {{ calculator_form.room_width.label }}
+            {{ calculator_form.room_width }}
+        </div>
+        
+        <div class="mui-textfield">
+            {{ calculator_form.materials.label }}
+            {{ calculator_form.materials }}
+        </div>
+        
+        <div class="mui-textfield">
+            {{ calculator_form.work_type.label }}
+            {{ calculator_form.work_type }}
+        </div>
+        
+        <button type="submit" class="mui-btn mui-btn--raised mui-btn--primary">Рассчитать стоимость</button>
+    </form>
+    
+    {% if result %}
+        <h2>Расчет стоимости:</h2>
+        <ul>
+            {% for item in result %}
+                <li>{{ item.name }}: {{ item.cost }} руб.</li>
+            {% endfor %}
+        </ul>
+        <p>Итого: {{ total_cost }} руб.</p>
+    {% endif %}
+</div>
+{% endblock %}

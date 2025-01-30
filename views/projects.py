@@ -32,15 +32,16 @@ def create():
 def edit_project(project_id):
     project = Project.query.filter_by(id=project_id, user_id=current_user.id).first_or_404()
     form = ProjectForm(obj=project)
+    projectis = True
     if form.validate_on_submit():
-        project.title = form.title.data
+        project.name = form.title.data
         project.description = form.description.data
         db.session.commit()
         flash('Project updated successfully!', 'success')
         return redirect(url_for('projects.list_projects'))
-    return render_template('projects/form.html', form=form, title="Edit Project")
+    return render_template('projects/form.html', form=form, title="Edit Project", projectis=projectis)
 
-@projects_bp.route('/delete/<int:project_id>', methods=['POST'])
+@projects_bp.route('/delete/<int:project_id>', methods=['GET'])
 @login_required
 def delete_project(project_id):
     project = Project.query.filter_by(id=project_id, user_id=current_user.id).first_or_404()

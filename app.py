@@ -1,11 +1,12 @@
 from flask import Flask, render_template
 from config import Config
-from models import db, bcrypt, User
+from models import Project, db, bcrypt, User
 from views.auth import auth_bp
 from views.profile import profile_bp
 from flask_login import LoginManager
 from views.projects import projects_bp
 from views.planer import planer_bp
+from views.calc import calculator_bp
 from views.rating_comments import rating_comment_bp 
 
 app = Flask(__name__, static_folder='./static')
@@ -29,11 +30,17 @@ app.register_blueprint(profile_bp, url_prefix='/profile')
 app.register_blueprint(projects_bp, url_prefix='/projects')
 app.register_blueprint(rating_comment_bp, url_prefix='/project')
 app.register_blueprint(planer_bp, url_prefix='/planer')
+app.register_blueprint(calculator_bp, url_prefix='/calc')
 
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    projects = Project.query.all()
+    return render_template('home.html', projects=projects)
+
+@app.route('/news')
+def index():
+    return render_template('news.html')
 
 # Команда для создания базы данных
 @app.cli.command("create-db")

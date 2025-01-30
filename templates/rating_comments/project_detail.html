@@ -5,48 +5,51 @@
 {% block content %}
 <div class="mui-container">
     <!-- Заголовок и описание проекта -->
-    <div class="mui-panel">
+    <div class="mui-panel mui-panel--raised">
         <h1 class="mui--text-title">{{ project.name }}</h1>
         <p class="mui--text-body1">{{ project.description }}</p>
         
         <p class="mui--text-body1">Рейтинг проекта: {{ average_rating }}</p>
+        
         {% if current_user.id == project.user_id %}
-            <a href="{{ url_for('planer.index', project_id=project.id) }}" class="mui-btn mui-btn--success">Планировка</a>
+            <a href="{{ url_for('planer.index', project_id=project.id) }}" class="mui-btn mui-btn--primary">Планировка</a>
+            <a href="{{ url_for('projects.edit_project', project_id=project.id) }}" class="mui-btn mui-btn--primary">Редактировать</a>
+            <a href="{{ url_for('projects.delete_project', project_id=project.id) }}" class="mui-btn mui-btn--danger">Удалить</a>
         {% endif %}
     </div>
 
-    <div class="mui-panel">
+    <!-- Предпросмотр проекта -->
+    <div class="mui-panel mui-panel--raised">
         <h2 class="mui--text-subhead">Предпросмотр</h2>
         <div id="preview-container" style="width: 200px; height: 200px; border: 1px solid #ccc;"></div>
+        <a href="/planer/view3d_result/{{ project.id }}" class="mui-btn mui-btn--primary">Осмотреть подробнее</a>
     </div>
-    
 
     <!-- Рейтинг звёздочками -->
-    <div class="mui-panel">
+    <div class="mui-panel mui-panel--raised">
         <h2 class="mui--text-headline">Оцените этот проект</h2>
         <form method="post" class="mui-form">
             {{ rating_form.hidden_tag() }}
             <div class="rating">
                 {% for i in range(5, 0, -1) %}
-            <input type="radio" id="star{{ i }}" name="score" value="{{ i }}"
-                   {% if rating_form.score.data == i %}checked{% endif %} />
-            <label for="star{{ i }}" title="{{ i }} звезда">&#9733;</label>
+                <input type="radio" id="star{{ i }}" name="score" value="{{ i }}"
+                       {% if rating_form.score.data == i %}checked{% endif %} />
+                <label for="star{{ i }}" title="{{ i }} звезда">&#9733;</label>
+                {% endfor %}
+            </div>
+            {% for error in rating_form.score.errors %}
+                <div class="mui--text-danger">{{ error }}</div>
             {% endfor %}
-        </div>
-        {% for error in rating_form.score.errors %}
-            <div class="mui--text-danger">{{ error }}</div>
-        {% endfor %}
             <button type="submit" class="mui-btn mui-btn--raised mui-btn--primary">Оценить</button>
         </form>
     </div>
 
     <!-- Секция для комментариев -->
-    <div class="mui-panel">
+    <div class="mui-panel mui-panel--raised">
         <h2 class="mui--text-headline">Оставьте комментарий</h2>
         <form method="post" class="mui-form">
             {{ comment_form.hidden_tag() }}
             <div class="mui-textfield">
-                {{ comment_form.text.label }}
                 {{ comment_form.text }}
             </div>
             {% for error in comment_form.text.errors %}
@@ -57,7 +60,7 @@
     </div>
 
     <!-- Слайдер для комментариев -->
-    <div class="mui-panel">
+    <div class="mui-panel mui-panel--raised">
         <h3 class="mui--text-subhead">Комментарии</h3>
         <div class="comment-slider">
             <button class="mui-btn mui-btn--fab prev-btn">‹</button>
@@ -66,7 +69,7 @@
                 <div class="comment">
                     <h3><strong>{{ comment.user.username }}</strong></h3>
                     <span class="mui--text-caption">({{ comment.created_at.strftime('%d-%m-%Y %H:%M') }})</span>
-                <h3>{{ comment.text }}</h3>
+                    <p>{{ comment.text }}</p>
                 </div>
                 {% endfor %}
             </div>
@@ -74,6 +77,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- Подключение CSS для звёздочек и слайдера -->
 <style>
@@ -183,8 +187,8 @@
         floorData.floor_data.forEach(createPreviewObject);
 
         // Размещаем камеру
-        previewCamera.position.set(-200, 0, -200);
-        previewCamera.lookAt(new THREE.Vector3(0, 0, 0));
+        previewCamera.position.set(360, 200, 270);
+        previewCamera.lookAt(new THREE.Vector3(100, 0, 0));
 
         // Рендерим один раз (без анимации)
         previewRenderer.render(previewScene, previewCamera);

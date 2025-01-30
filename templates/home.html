@@ -7,25 +7,51 @@
     <div class="mui--text-display1">Добро пожаловать в Онлайн Гид!</div>
     <p>Ищите вдохновение, создавайте проекты и делитесь идеями с другими!</p>
 
+    <!-- Секция популярных проектов -->
     <h2 class="mui--text-title">Популярные проекты</h2>
     <div class="mui-container-fluid">
-        {% for project in popular_projects %}
-            <div class="mui-panel">
-                <h3>{{ project.title }}</h3>
+        {% for project in projects %}
+            <div class="mui-panel mui-panel--raised">
+                <h3>{{ project.name }}</h3>
                 <p>{{ project.description[:100] }}...</p>
-                <a href="{{ url_for('projects.detail', project_id=project.id) }}" class="mui-btn mui-btn--flat mui-btn--primary">Подробнее</a>
+                <a href="/project/{{ project.id }}" class="mui-btn mui-btn--flat mui-btn--primary">Подробнее</a>
             </div>
         {% endfor %}
     </div>
 
-    <h2 class="mui--text-title">Категории</h2>
+    
+
+    <!-- Секция инструментов -->
+    <h2 class="mui--text-title">Инструменты</h2>
     <div class="mui-container-fluid">
         <div class="mui-btn-group">
-            <a href="#" class="mui-btn mui-btn--flat mui-btn--accent">Кухни</a>
-            <a href="#" class="mui-btn mui-btn--flat mui-btn--accent">Гостиные</a>
-            <a href="#" class="mui-btn mui-btn--flat mui-btn--accent">Спальни</a>
-            <a href="#" class="mui-btn mui-btn--flat mui-btn--accent">Ванные комнаты</a>
+            <a href="/calc" class="mui-btn mui-btn--flat mui-btn--primary">Калькулятор стоимсости</a>
+            <a href="#" class="mui-btn mui-btn--flat mui-btn--success">Планировщик мебели в комнате</a>
+        </div>
+    </div>
+
+    <!-- Секция новостей и обновлений -->
+    <h2 class="mui--text-title">Новости и обновления</h2>
+    <div class="mui-container-fluid">
+        <div class="mui-panel mui-panel--raised">
+            <h3>Новости</h3>
+            <p>Последние новости и обновления на сайте.</p>
+            <a href="/news" class="mui-btn mui-btn--flat mui-btn--primary">Читать дальше</a>
+        </div>
+    </div>
+
+    <!-- Секция сообщества -->
+    <h2 class="mui--text-title">Сообщество</h2>
+    <div class="mui-container-fluid">
+        <div class="mui-panel mui-panel--raised">
+            <h3>Присоединяйтесь к нашему сообществу</h3>
+            <p>Обсуждайте проекты и делитесь идеями с другими пользователями.</p>
+            <a href="/projects" class="mui-btn mui-btn--flat mui-btn--primary">Присоединиться</a>
         </div>
     </div>
 </div>
+
+<style>
+    
+</style>
 {% endblock %}
