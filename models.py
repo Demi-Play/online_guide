@@ -18,10 +18,11 @@ class User(db.Model, UserMixin):
     created_at = db.Column(db.DateTime, default=datetime.now)
     role = db.Column(db.String(50), default='user')
     
-    projects = db.relationship('Project', backref='user', lazy=True)
-    comments = db.relationship('Comment', backref='user', lazy=True)
-    ratings = db.relationship('Rating', backref='user', lazy=True)
-    favorites = db.relationship('Favorite', backref='user', lazy=True)
+    projects = db.relationship('Project', backref='user', lazy=True, cascade="all, delete-orphan")
+    comments = db.relationship('Comment', backref='user', lazy=True, cascade="all, delete-orphan")
+    ratings = db.relationship('Rating', backref='user', lazy=True, cascade="all, delete-orphan")
+    favorites = db.relationship('Favorite', backref='user', lazy=True, cascade="all, delete-orphan")
+
 
     @property
     def password(self):
@@ -30,6 +31,10 @@ class User(db.Model, UserMixin):
     @password.setter
     def password(self, password):
         self.password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+        
+    def setPassword(self, password):
+        return bcrypt.generate_password_hash(password).decode('utf-8')
+    
 
     def check_password(self, password):
         return bcrypt.check_password_hash(self.password_hash, password)

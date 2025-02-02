@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Редактировать пользователя{% endblock %}
+
+{% block content %}
+<div class="mui-container">
+    <h1 class="mui--text-headline">Редактировать пользователя: {{ user.username }}</h1>
+
+    <form method="post" class="mui-form">
+        <div class="mui-textfield">
+            <label>Имя пользователя:</label>
+            <input type="text" name="username" value="{{ user.username }}" required>
+        </div>
+
+        <div class="mui-textfield">
+            <label>Email:</label>
+            <input type="email" name="email" value="{{ user.email }}" required>
+        </div>
+
+        <div class="mui-textfield">
+            <label>Роль:</label>
+            <select name="role" required>
+                <option value="user" {% if not user.is_admin %}selected{% endif %}>Пользователь</option>
+                <option value="admin" {% if user.is_admin %}selected{% endif %}>Администратор</option>
+            </select>
+        </div>
+
+        <!-- Здесь можно добавить поле для изменения пароля -->
+        
+        <button type="submit" class="mui-btn mui-btn--raised mui-btn--primary">Сохранить изменения</button>
+    </form>
+
+    <a href="{{ url_for('admin.index') }}" class="mui-btn mui-btn--flat">Назад</a>
+</div>
+{% endblock %}

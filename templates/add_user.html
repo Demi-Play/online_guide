@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Добавить пользователя{% endblock %}
+
+{% block content %}
+<div class="mui-container">
+    <h1 class="mui--text-headline">Добавить пользователя</h1>
+
+    <form method="post" class="mui-form">
+        <div class="mui-textfield">
+            <label>Имя пользователя:</label>
+            <input type="text" name="username" required>
+        </div>
+
+        <div class="mui-textfield">
+            <label>Email:</label>
+            <input type="email" name="email" required>
+        </div>
+
+        <div class="mui-textfield">
+            <label>Пароль:</label>
+            <input type="password" name="password" required>
+        </div>
+
+        <button type="submit" class="mui-btn mui-btn--raised mui-btn--primary">Добавить</button>
+    </form>
+
+    <a href="{{ url_for('admin.index') }}" class="mui-btn mui-btn--flat">Назад</a>
+</div>
+{% endblock %}

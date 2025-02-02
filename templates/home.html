@@ -4,8 +4,10 @@
 
 {% block content %}
 <div class="mui-container">
-    <div class="mui--text-display1">Добро пожаловать в Онлайн Гид!</div>
-    <p>Ищите вдохновение, создавайте проекты и делитесь идеями с другими!</p>
+    <div class="mui--text">
+        <h1 class="mui--text-display1">Добро пожаловать в Онлайн Гид!</h1>
+        <p>Ищите вдохновение, создавайте проекты и делитесь идеями с другими!</p>
+    </div>
 
     <!-- Секция популярных проектов -->
     <h2 class="mui--text-title">Популярные проекты</h2>
@@ -19,13 +21,11 @@
         {% endfor %}
     </div>
 
-    
-
     <!-- Секция инструментов -->
     <h2 class="mui--text-title">Инструменты</h2>
     <div class="mui-container-fluid">
         <div class="mui-btn-group">
-            <a href="/calc" class="mui-btn mui-btn--flat mui-btn--primary">Калькулятор стоимсости</a>
+            <a href="/calc" class="mui-btn mui-btn--flat mui-btn--primary">Калькулятор стоимости</a>
             <a href="#" class="mui-btn mui-btn--flat mui-btn--success">Планировщик мебели в комнате</a>
         </div>
     </div>
@@ -52,6 +52,32 @@
 </div>
 
 <style>
-    
+    .mui--text {
+        padding-top: 30px;
+        text-align: center;
+        padding-bottom: 15px;
+        background-color:rgb(83, 171, 243);
+        color: aliceblue;
+    }
+    .mui-panel {
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .mui-panel h3 {
+        margin-top: 0;
+    }
+
+    .mui-container-fluid {
+        padding: 10px;
+    }
+
+    .mui-btn-group {
+        display: flex;
+        gap: 10px; /* Отступ между кнопками */
+        flex-wrap: wrap; /* Обеспечивает перенос кнопок на новую строку при необходимости */
+    }
 </style>
+
 {% endblock %}

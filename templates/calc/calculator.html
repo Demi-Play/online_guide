@@ -10,23 +10,23 @@
         {{ calculator_form.hidden_tag() }}
         
         <div class="mui-textfield">
-            {{ calculator_form.room_length.label }}
-            {{ calculator_form.room_length }}
+            {{ calculator_form.room_length.label(class="mui--text-body2") }}
+            {{ calculator_form.room_length(class="mui-input") }}
         </div>
         
         <div class="mui-textfield">
-            {{ calculator_form.room_width.label }}
-            {{ calculator_form.room_width }}
+            {{ calculator_form.room_width.label(class="mui--text-body2") }}
+            {{ calculator_form.room_width(class="mui-input") }}
+        </div>
+        
+        <div class="mui-textfield" id="outlined-select-currency">
+            {{ calculator_form.materials.label(class="mui--text-body2") }}
+            {{ calculator_form.materials(class="mui-select") }}
         </div>
         
         <div class="mui-textfield">
-            {{ calculator_form.materials.label }}
-            {{ calculator_form.materials }}
-        </div>
-        
-        <div class="mui-textfield">
-            {{ calculator_form.work_type.label }}
-            {{ calculator_form.work_type }}
+            {{ calculator_form.work_type.label(class="mui--text-body2") }}
+            {{ calculator_form.work_type(class="mui-select") }}
         </div>
         
         <button type="submit" class="mui-btn mui-btn--raised mui-btn--primary">Рассчитать стоимость</button>

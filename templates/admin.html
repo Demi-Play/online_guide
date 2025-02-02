@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Административная панель{% endblock %}
+
+{% block content %}
+<div class="mui-container">
+    <div class="mui--text">
+        <h1 class="mui--text-display1">
+            Управление пользователями
+        </h1>
+    </div>
+    <!-- Таблица пользователей -->
+    <table class="mui-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Имя пользователя</th>
+                <th>Email</th>
+                <th>Роль</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ 'Администратор' if user.role == 'admin' else 'Пользователь' }}</td>
+                <td>
+                    <a href="{{ url_for('admin.edit_user', user_id=user.id) }}" class="mui-btn mui-btn--flat mui-btn--primary">Изменить</a>
+                    <form action="{{ url_for('admin.delete_user', user_id=user.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="mui-btn mui-btn--flat mui-btn--danger">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Кнопка для добавления нового пользователя -->
+    <a href="{{ url_for('admin.add_user') }}" class="mui-btn mui-btn--raised mui-btn--primary">Добавить пользователя</a>
+
+    {% if message %}
+        <div class="mui-alert mui--text-center">{{ message }}</div>
+    {% endif %}
+</div>
+
+<style>
+    .mui--text {
+        padding-top: 30px;
+        text-align: center;
+        padding-bottom: 15px;
+        background-color:rgb(83, 171, 243);
+        color: aliceblue;
+    }
+    .mui-table {
+        margin-top: 20px;
+    }
+    
+    .mui-alert {
+        margin-top: 20px;
+        color: green;
+        font-weight: bold;
+    }
+</style>
+
+{% endblock %}

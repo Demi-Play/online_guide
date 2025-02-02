@@ -8,6 +8,7 @@ from views.projects import projects_bp
 from views.planer import planer_bp
 from views.calc import calculator_bp
 from views.rating_comments import rating_comment_bp 
+from views.admin import admin_bp 
 
 app = Flask(__name__, static_folder='./static')
 app.config.from_object(Config)
@@ -31,6 +32,7 @@ app.register_blueprint(projects_bp, url_prefix='/projects')
 app.register_blueprint(rating_comment_bp, url_prefix='/project')
 app.register_blueprint(planer_bp, url_prefix='/planer')
 app.register_blueprint(calculator_bp, url_prefix='/calc')
+app.register_blueprint(admin_bp)
 
 
 @app.route('/')

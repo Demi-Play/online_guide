@@ -1,22 +1,29 @@
 {% extends 'base.html' %}
 
-{% block title %}Профиль{% endblock %}
+{% block title %}
+  Профиль
+{% endblock %}
 
 {% block content %}
-<div class="mui-panel">
+  <div class="mui-panel">
     <h2 class="mui--text-headline">Привет, {{ current_user.username }}</h2>
     <p>Email: {{ current_user.email }}</p>
     <p>Дата регистрации: {{ current_user.created_at.strftime('%d.%m.%Y') }}</p>
-</div>
-
-<h3 class="mui--text-title">Ваши проекты</h3>
-<div class="mui-container-fluid">
+  </div>
+  {% if current_user.role == 'admin' %}
+    <div class="mui-panel">
+      <p>Вам доступно:</p>
+      <a href="{{ url_for('admin.index') }}" class="mui-btn mui-btn--danger lin">Админ панель</a>
+    </div>
+  {% endif %}
+  <h3 class="mui--text-title">Ваши проекты</h3>
+  <div class="mui-container-fluid">
     {% for project in projects %}
-        <div class="mui-panel">
-            <h4>{{ project.name }}</h4>
-            <p>{{ project.description }}</p>
-            <a href="/project/{{ project.id }}" class="mui-btn mui-btn--primary">Подробнее</a>
-        </div>
+      <div class="mui-panel">
+        <h4>{{ project.name }}</h4>
+        <p>{{ project.description }}</p>
+        <a href="/project/{{ project.id }}" class="mui-btn mui-btn--primary">Подробнее</a>
+      </div>
     {% endfor %}
-</div>
+  </div>
 {% endblock %}

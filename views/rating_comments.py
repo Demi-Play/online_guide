@@ -38,6 +38,9 @@ def project_detail(project_id):
     ratings = Rating.query.filter_by(project_id=project.id).all()
 
     rating_values = [rating.value for rating in ratings]
+    
+    rating_count = len(ratings)
+    comment_count = len(comments)
 
     if rating_values:
         average_rating = statistics.mean(rating_values)
@@ -45,4 +48,4 @@ def project_detail(project_id):
         average_rating = 0  # Если нет рейтингов, средний = 0
 
 
-    return render_template('rating_comments/project_detail.html', average_rating=average_rating, project=project, comments=comments, ratings=ratings, rating_form=rating_form, comment_form=comment_form)
+    return render_template('rating_comments/project_detail.html', comment_count=comment_count, rating_count=rating_count, average_rating=average_rating, project=project, comments=comments, ratings=ratings, rating_form=rating_form, comment_form=comment_form)
